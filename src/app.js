@@ -78,7 +78,7 @@ textarea{width:100%;height:80px;font-size:12px;margin:6px 0}
 .row{display:flex;gap:6px;margin-bottom:8px}
 .row input:first-child{width:70px}.row input:nth-child(2){flex:1}
 .list>div{display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid #333;gap:6px}
-.list .info{flex:1}.plnm{font-size:20px;font-weight:800;letter-spacing:.3px;line-height:1.15;padding-left:4px}.list small{color:#999}
+.list .info{flex:1}.plnm{font-size:17px;font-weight:700;letter-spacing:.3px;line-height:1.15;padding-left:4px}.list small{color:#999}
 .tw{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:12px}
 th,td{padding:5px 3px;text-align:center;border-bottom:1px solid #333;white-space:nowrap}
@@ -262,7 +262,7 @@ body{padding-top:calc(env(safe-area-inset-top) + 10px)!important}
 .jer{display:block;margin:0 auto 5px;flex:none}
 .tname{font:800 21px/1.05 'Barlow Condensed',system-ui,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#fff}
 .tcat{font-size:11.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#fff;opacity:.85;margin-top:3px}
-body.playing #marc{margin:26px 0 16px}body.playing .tinfo{margin:0 0 40px}
+body.playing #marc{margin:14px 0 16px}body.playing .tinfo{margin:0 0 40px}
 .top .hr{display:flex;align-items:center;gap:10px;align-self:flex-start;flex:none}.hr .lang{align-self:center}
 #bCfg{display:none;width:34px;height:34px;padding:0;font-size:18px;line-height:32px;border-radius:50%;background:rgba(0,0,0,.25)!important;border:1px solid rgba(255,255,255,.45)!important}
 body.playing #bCfg{display:block}
@@ -290,7 +290,7 @@ body.playing #bCfg{display:block}
 #toastb{position:fixed;left:10px;right:10px;top:calc(env(safe-area-inset-top) + 8px);z-index:110;display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(28,28,30,.96);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:10px 12px;color:#fff;font-size:15px;font-weight:600;transform:translateY(-160%);transition:transform .25s ease;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.5)}
 #toastb.on{transform:none;pointer-events:auto}#toastb button{padding:8px 12px;font-size:14px;flex:none}
 body.playing .top{padding:6px 10px!important;margin-bottom:8px!important}body.playing .logo{width:30px;height:28px;border-radius:7px}body.playing .tname{font-size:16px}body.playing .tcat{display:none}
-body.playing .tabs{margin-bottom:6px}body.playing .tabs button{padding:7px 2px}
+
 body.playing .score{padding:6px 10px!important;margin-bottom:8px}body.playing .score b{font-size:28px}body.playing .q button{padding:6px 9px}
 body.playing #pplay>div:first-child{margin-bottom:4px!important}
 .er{display:grid;grid-template-columns:52px 1fr 1fr 40px;gap:4px;margin-bottom:4px}
