@@ -8,8 +8,11 @@ for env in prod beta; do
   [ -d "$env" ] || continue
   if [ "$env" = prod ]; then D=_site; else D=_site/beta; fi
   mkdir -p "$D/fonts" "$D/vendor" "$D/icons"
-  cp src/app.js "$D/"
-  sed "s/__VERSION__/$VER/" src/sw.js > "$D/sw.js"
+  # beta usa src/app.js; producción usa prod/app.js (congelada hasta validar en beta)
+  if [ "$env" = prod ] && [ -f prod/app.js ]; then APPJS=prod/app.js; else APPJS=src/app.js; fi
+  cp "$APPJS" "$D/app.js"
+  V="$(cat "$APPJS" src/sw.js src/fonts.css "$env/index.html" "$env/manifest.webmanifest" | sha256sum | cut -c1-10)"
+  sed "s/__VERSION__/$V/" src/sw.js > "$D/sw.js"
   cp "$env/index.html" "$env/manifest.webmanifest" "$D/"
   cp node_modules/html2canvas/dist/html2canvas.min.js "$D/vendor/"
   cp src/fonts.css "$D/fonts/"
