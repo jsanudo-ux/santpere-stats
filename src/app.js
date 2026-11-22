@@ -147,8 +147,8 @@ document.body.innerHTML=`<style>${CSS}</style>
 <button class="on" style="width:100%;margin-top:16px;padding:16px;font-size:17px" onclick="setView('play')">${L.start}</button>
 </div>
 <div id="pplay"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px"><b id="minfo" style="font-size:14px"></b><button style="padding:8px 12px;font-size:13px;flex:none" onclick="setView('cfg')">⚙️ ${L.setupShort}</button></div>
-<div class="score"><div>${L.points}<br><b id="pts">0</b></div><div class="q" id="cuartos"></div></div>
-<div class="tinfo"><span id="tfal"></span></div>
+<div class="score sb" id="marc"></div>
+<div class="tinfo"><span id="tfal"></span><div class="q" id="cuartos"></div></div>
 <div class="lbl" id="lblPista"></div>
 <div class="players" id="sel"></div>
 <button id="bCambio" onclick="modoCambio()" style="width:100%;margin-bottom:8px"></button>
@@ -272,6 +272,14 @@ body{padding-top:calc(env(safe-area-inset-top) + 10px)!important}
 .mvs{text-align:center;font:800 14px 'Barlow Condensed',system-ui;color:#888;margin:6px 0;letter-spacing:2px}
 #rival{width:100%}
 .tinfo{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:-4px 0 10px}
+.tinfo .q{gap:4px}.tinfo .q button{padding:6px 9px;font-size:13px;min-width:0}
+.score.sb{display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:6px;padding:12px 10px}
+.sbt{display:flex;flex-direction:column;align-items:center;min-width:0;text-align:center}
+.sbt span{font:800 15px 'Barlow Condensed',system-ui;letter-spacing:1px;text-transform:uppercase;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.95}
+.score.sb .sbt b{font:800 52px/1 'Barlow Condensed',system-ui;margin-top:2px}
+.score.sb .sbt.rv b{opacity:.8}.score.sb .sbd{font:800 34px/1 'Barlow Condensed',system-ui;opacity:.6;padding-top:26px}
+.rbt{display:flex;gap:5px;margin-top:8px}.rbt button{padding:5px 0;width:38px;font-size:13px;font-weight:800;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:9px}
+.rbt button.pop{animation:rpop .35s}@keyframes rpop{50%{transform:scale(1.25);background:#fff;color:#d7141a}}
 #tfal{font-size:13px;color:#ccc;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.06)}#tfal.bonus{background:rgba(255,214,10,.2);color:#ffd60a;border:1px solid rgba(255,214,10,.5)}
 #bTM{padding:7px 12px;font-size:13px}#bTM:disabled{opacity:.4}
 #toastb{position:fixed;left:10px;right:10px;top:calc(env(safe-area-inset-top) + 8px);z-index:110;display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(28,28,30,.96);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:10px 12px;color:#fff;font-size:15px;font-weight:600;transform:translateY(-160%);transition:transform .25s ease;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.5)}
@@ -308,17 +316,24 @@ function fotoP(id){fsel=id;$('finput').value='';$('finput').click()}
 function cargaFoto(inp){const file=inp.files[0];if(!file)return;const img=new Image();img.onload=()=>{const z=140,c=document.createElement('canvas');c.width=c.height=z;const s=Math.min(img.width,img.height);c.getContext('2d').drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,z,z);const j=S.jug.find(x=>x.id===fsel);if(j){j.f=c.toDataURL('image/jpeg',0.7);save();render();$('plmsg').textContent=L.photoSet}URL.revokeObjectURL(img.src)};img.src=URL.createObjectURL(file)}
 async function guardarPl(){$('plmsg').textContent=L.savingD;const ok=await persistir();$('plmsg').textContent=ok?L.plSaved:L.localOnly}
 function act(k){if(cambio){flash(L.endSubsFirst);return}if(!cur||!S.pista.includes(cur)){flash(L.pickPlayer);return}S.ev.push({p:cur,k,q:S.q});S.redo=[];{const pn={'T2+':2,'T3+':3,'TL+':1}[k];if(pn){const id=cur;setTimeout(()=>fx(id,pn),0)}}save();render();toast(cur,k);if(k==='FA'&&st(S.ev,cur).FA===5)flash(L.foul5(S.jug.find(j=>j.id===cur).n));if(k==='FA'&&tFal()===4)flash(L.bonus)}
+const isR=e=>e.p===0&&/^R[123]$/.test(e.k);
+const rivP=ev=>ev.filter(isR).reduce((a,e)=>a+ +e.k[1],0);
+function syncRp(){if(S.ev.some(isR))S.rp=String(rivP(S.ev))}
+function rivPt(n){S.ev.push({p:0,k:'R'+n,q:S.q});S.redo=[];syncRp();save();render();toast(0,'R'+n);const b=$('rv'+n);if(b){b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}}
+function marcador(P){const R=rivP(S.ev),rn=esc(S.rival||L.noRival),btn=`<div class="rbt">${[1,2,3].map(n=>`<button id="rv${n}" onclick="rivPt(${n})">+${n}</button>`).join('')}</div>`;
+const us=`<div class="sbt us"><span>${esc(TEAM)}</span><b>${P}</b></div>`,them=`<div class="sbt rv"><span>${rn}</span><b>${R}</b>${btn}</div>`,
+dash='<div class="sbd">–</div>';return S.loc==='V'?them+dash+us:us+dash+them}
 const tFal=()=>S.ev.filter(e=>e.k==='FA'&&(S.q>=4?e.q>=4:e.q===S.q)).length;
 const tmLeft=()=>{const h=S.q<=2?[1,2]:S.q<=4?[3,4]:[5],mx=S.q<=2?2:S.q<=4?3:1;return Math.max(0,mx-S.ev.filter(e=>e.k==='TM'&&h.includes(e.q)).length)};
 function tiempoMuerto(){if(!tmLeft())return;S.ev.push({p:0,k:'TM',q:S.q});S.redo=[];save();render();toast(0,'TM')}
 let toastT=null;
 function toast(id,k){let t=$('toastb');if(!t){t=document.createElement('div');t.id='toastb';document.body.appendChild(t)}const j=S.jug.find(x=>x.id===id);const sn=j?(j.d!==''?'#'+j.d+' ':'')+String(j.n).split(' ')[0]:'';
-t.innerHTML=`<span>${k==='TM'?L.tmLog:esc(sn)+' · '+(L.ev[k]||k)}</span><button onclick="undo();$('toastb').classList.remove('on')">${L.undo}</button>`;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),3500)}
+t.innerHTML=`<span>${k==='TM'?L.tmLog:/^R[123]$/.test(k)?esc(S.rival||L.noRival)+' +'+k[1]:esc(sn)+' · '+(L.ev[k]||k)}</span><button onclick="undo();$('toastb').classList.remove('on')">${L.undo}</button>`;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),3500)}
 let WL=null;
 async function wakeOn(){const want=curTab==='partido'&&S.view==='play'&&document.visibilityState==='visible';try{if(want&&!WL&&navigator.wakeLock){WL=await navigator.wakeLock.request('screen');WL.addEventListener('release',()=>{WL=null})}else if(!want&&WL){await WL.release();WL=null}}catch(e){WL=null}}
 document.addEventListener('visibilitychange',()=>{WL=null;wakeOn()});
-function undo(){const e=S.ev.pop();if(e)(S.redo=S.redo||[]).push(e);save();render()}
-function redo(){const r=S.redo||[];if(!r.length)return;const e=r.pop();S.ev.push(e);save();render();if(e.k==='FA'&&st(S.ev,e.p).FA===5){const j=S.jug.find(x=>x.id===e.p);if(j)flash(L.foul5(j.n))}}
+function undo(){const e=S.ev.pop();if(e)(S.redo=S.redo||[]).push(e);if(e&&isR(e))S.rp=S.ev.some(isR)?String(rivP(S.ev)):'';save();render()}
+function redo(){const r=S.redo||[];if(!r.length)return;const e=r.pop();S.ev.push(e);if(isR(e))syncRp();save();render();if(e.k==='FA'&&st(S.ev,e.p).FA===5){const j=S.jug.find(x=>x.id===e.p);if(j)flash(L.foul5(j.n))}}
 let swallowT=0,G=null;
 function gestos(){const z=$('sel');if(!z)return;
 z.addEventListener('pointerdown',e=>{if(cambio||e.pointerType==='mouse'&&e.button!==0){G=null;return}const b=e.target.closest('button[data-id]');G=b?{id:+b.dataset.id,x:e.clientX,y:e.clientY,p:e.pointerId,el:b}:null});
@@ -348,8 +363,8 @@ $('lista').innerHTML=S.jug.map(j=>`<div><input type="number" inputmode="numeric"
 const ae=document.activeElement;if(ae!==$('rival'))$('rival').value=S.rival||'';$('fecha').value=S.fecha||'';if(ae!==$('rp'))$('rp').value=S.rp||'';
 $('sel').innerHTML=S.jug.filter(j=>S.pista.includes(j.id)).map(j=>{const f=st(S.ev,j.id).FA;return`<button class="${cambio?(OUT.includes(j.id)?'sel':''):(cur===j.id?'on':'')}" data-id="${j.id}" onclick="tocaPista(${j.id})">${j.f?av(j):jer(j.d)}${nm2(j)}${f?` <span class="${f>=5?'warn':''}">F${f}</span>`:''}</button>`}).join('');
 $('cuartos').innerHTML=[1,2,3,4,5].map(q=>`<button class="${S.q===q?'on':''}" onclick="S.q=${q};save();render()">${qn(q)}</button>`).join('');
-const P=st(S.ev,null).PTS;$('pts').textContent=P;{const r=$('bRedo');if(r)r.disabled=!(S.redo&&S.redo.length)}$('bL').classList.toggle('on',S.loc!=='V');$('bV').classList.toggle('on',S.loc==='V');$('pcfg').classList.toggle('hide',S.view==='play');$('pplay').classList.toggle('hide',S.view!=='play');{const tf=tFal();const e=$('tfal');if(e){e.innerHTML=L.tFouls(tf);e.className=tf>=4?'bonus':''}const b=$('bTM');if(b){const n=tmLeft();b.textContent=n?L.tmBtn(n):L.tmNone;b.disabled=!n}}document.body.classList.toggle('playing',curTab==='partido'&&S.view==='play');wakeOn();prevM();$('minfo').textContent=vsT(S,S.rival||L.noRival);
-$('log').innerHTML=S.ev.slice(-15).reverse().map(e=>{if(e.k==='TM')return`<div>${qn(e.q)} · ${L.tmLog}</div>`;const j=S.jug.find(x=>x.id===e.p);return`<div>${qn(e.q)} · ${j?esc(dn(j)):'?'} — ${L.ev[e.k]||e.k}</div>`}).join('');
+const P=st(S.ev,null).PTS;$('marc').innerHTML=marcador(P);{const r=$('bRedo');if(r)r.disabled=!(S.redo&&S.redo.length)}$('bL').classList.toggle('on',S.loc!=='V');$('bV').classList.toggle('on',S.loc==='V');$('pcfg').classList.toggle('hide',S.view==='play');$('pplay').classList.toggle('hide',S.view!=='play');{const tf=tFal();const e=$('tfal');if(e){e.innerHTML=L.tFouls(tf);e.className=tf>=4?'bonus':''}const b=$('bTM');if(b){const n=tmLeft();b.textContent=n?L.tmBtn(n):L.tmNone;b.disabled=!n}}document.body.classList.toggle('playing',curTab==='partido'&&S.view==='play');wakeOn();prevM();$('minfo').textContent=vsT(S,S.rival||L.noRival);
+$('log').innerHTML=S.ev.slice(-15).reverse().map(e=>{if(e.k==='TM')return`<div>${qn(e.q)} · ${L.tmLog}</div>`;if(isR(e))return`<div>${qn(e.q)} · ${esc(S.rival||L.noRival)} +${e.k[1]}</div>`;const j=S.jug.find(x=>x.id===e.p);return`<div>${qn(e.q)} · ${j?esc(dn(j)):'?'} — ${L.ev[e.k]||e.k}</div>`}).join('');
 $('titRes').textContent=`${vsT(S,S.rival||L.noRival)} · ${fmtF(S.fecha)} · ${rsT(S,P,S.rp)}`;
 window._rows=tablaDe([...S.jug].sort((a,b)=>st(S.ev,b.id).PTS-st(S.ev,a.id).PTS||ord(a,b)),S.ev,$('tabla'));renderPista();renderTemp();
 $('hlist').innerHTML=H.length?H.map(m=>{const a=st(m.ev,null).PTS,b=m.rp;const c=b===''?'':(a>b?'win':a<b?'lose':'');return`<div onclick="verH(${m.id})"><span class="info"><b>${esc(vsT(m,m.rival||L.noRival))}</b><br><small>${fmtF(m.fecha)} · ${m.loc==='V'?L.away:L.home}</small></span><span class="${c}"><b>${rsT(m,a,b)}</b></span></div>`}).join(''):`<p style="color:#888">${L.noMatchesH}</p>`;
@@ -456,7 +471,7 @@ function editH(){EDIT=!EDIT;verH(hSel)}
 function renderEdit(m){const z=$('hedit');if(!z)return;$('bEdit').textContent=EDIT?L.editDone:L.editBtn;if(!EDIT){z.innerHTML='';return}
 const js=m.jug.map(actual);const opt=(v,o)=>o.map(([a,b])=>`<option value="${a}"${String(a)===String(v)?' selected':''}>${esc(b)}</option>`).join('');
 const qs=[1,2,3,4,5].map(q=>[q,qn(q)]),ps=js.map(j=>[j.id,dn(j)]),ks=EKEYS.map(k=>[k,L.ev[k]]);
-z.innerHTML=`<p class="lbl">${L.editHint}</p><button style="width:100%;margin:6px 0" onclick="addEv()">${L.addAct}</button>`+m.ev.map((e,i)=>e.k==='TM'?'':`<div class="er"><select onchange="setEv(${i},'q',+this.value)">${opt(e.q,qs)}</select><select onchange="setEv(${i},'p',+this.value)">${opt(e.p,ps)}</select><select onchange="setEv(${i},'k',this.value)">${opt(e.k,EKEYS.includes(e.k)?ks:[...ks,[e.k,L.ev[e.k]||e.k]])}</select><button class="ko" onclick="delEv(${i})">✕</button></div>`).reverse().join('')}
+z.innerHTML=`<p class="lbl">${L.editHint}</p><button style="width:100%;margin:6px 0" onclick="addEv()">${L.addAct}</button>`+m.ev.map((e,i)=>e.k==='TM'||isR(e)?'':`<div class="er"><select onchange="setEv(${i},'q',+this.value)">${opt(e.q,qs)}</select><select onchange="setEv(${i},'p',+this.value)">${opt(e.p,ps)}</select><select onchange="setEv(${i},'k',this.value)">${opt(e.k,EKEYS.includes(e.k)?ks:[...ks,[e.k,L.ev[e.k]||e.k]])}</select><button class="ko" onclick="delEv(${i})">✕</button></div>`).reverse().join('')}
 async function guardaEd(){await persistir();const y=scrollY;verH(hSel);scrollTo(0,y)}
 function setEv(i,f,v){const m=H.find(x=>x.id===hSel);if(!m)return;m.ev[i][f]=v;if(f==='p'){m.jugaron=m.jugaron||[];if(!m.jugaron.includes(v))m.jugaron.push(v)}guardaEd()}
 function delEv(i){confirmar(L.delAct,()=>{const m=H.find(x=>x.id===hSel);if(!m)return;m.ev.splice(i,1);guardaEd()})}
