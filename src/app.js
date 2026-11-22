@@ -178,7 +178,7 @@ ${['RE','AS','RB','TP','FA'].map(k=>`<button${k==='RE'?' class="rbb"':''}${k==='
 </div>
 <div class="box" id="bkbox"><h2>${L.backup}</h2><p class="lbl">${L.bkHint}</p>
 <button style="width:100%" onclick="exportar()">${L.bkCopy}</button>
-<input type="file" id="bkfile" accept=".json,application/json" class="hide" onchange="importar(this)">
+<input type="file" id="bkfile" class="hide" onchange="importar(this)">
 <button style="width:100%" onclick="pideImport()">${L.bkRestore}</button><p id="bkmsg" class="msg"></p></div>
 </section>
 <section id="temporada" class="hide">
