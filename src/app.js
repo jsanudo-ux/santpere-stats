@@ -149,7 +149,7 @@ document.body.innerHTML=`<style>${CSS}</style>
 </div>
 <div id="pplay"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px"><b id="minfo" style="font-size:14px"></b><button style="padding:8px 12px;font-size:13px;flex:none" onclick="setView('cfg')">⚙️ ${L.setupShort}</button></div>
 <div class="score"><div>${L.points}<br><b id="pts">0</b></div><div class="q" id="cuartos"></div></div>
-<div class="tinfo"><span id="tfal"></span><button id="bTM" onclick="tiempoMuerto()"></button></div>
+<div class="tinfo"><span id="tfal"></span></div>
 <div class="lbl" id="lblPista"></div>
 <div class="players" id="sel"></div>
 <button id="bCambio" onclick="modoCambio()" style="width:100%;margin-bottom:8px"></button>
@@ -335,7 +335,7 @@ $('lista').innerHTML=S.jug.map(j=>`<div><input type="number" inputmode="numeric"
 const ae=document.activeElement;if(ae!==$('rival'))$('rival').value=S.rival||'';$('fecha').value=S.fecha||'';if(ae!==$('rp'))$('rp').value=S.rp||'';
 $('sel').innerHTML=S.jug.filter(j=>S.pista.includes(j.id)).map(j=>{const f=st(S.ev,j.id).FA;return`<button class="${cambio?(OUT.includes(j.id)?'sel':''):(cur===j.id?'on':'')}" data-id="${j.id}" onclick="tocaPista(${j.id})">${j.f?av(j):jer(j.d)}${nm2(j)}${f?` <span class="${f>=5?'warn':''}">F${f}</span>`:''}</button>`}).join('');
 $('cuartos').innerHTML=[1,2,3,4,5].map(q=>`<button class="${S.q===q?'on':''}" onclick="S.q=${q};save();render()">${qn(q)}</button>`).join('');
-const P=st(S.ev,null).PTS;$('pts').textContent=P;{const r=$('bRedo');if(r)r.disabled=!(S.redo&&S.redo.length)}$('bL').classList.toggle('on',S.loc!=='V');$('bV').classList.toggle('on',S.loc==='V');$('pcfg').classList.toggle('hide',S.view==='play');$('pplay').classList.toggle('hide',S.view!=='play');{const tf=tFal();const e=$('tfal');if(e){e.innerHTML=L.tFouls(tf);e.className=tf>=4?'bonus':''}const b=$('bTM');if(b){const n=tmLeft();b.textContent=n?L.tmBtn(n):L.tmNone;b.disabled=!n}}document.body.classList.toggle('playing',curTab==='partido'&&S.view==='play');wakeOn();prevM();$('minfo').textContent=`${vsT(S,S.rival||L.noRival)} · ${S.loc==='V'?L.away:L.home}`;
+const P=st(S.ev,null).PTS;$('pts').textContent=P;{const r=$('bRedo');if(r)r.disabled=!(S.redo&&S.redo.length)}$('bL').classList.toggle('on',S.loc!=='V');$('bV').classList.toggle('on',S.loc==='V');$('pcfg').classList.toggle('hide',S.view==='play');$('pplay').classList.toggle('hide',S.view!=='play');{const tf=tFal();const e=$('tfal');if(e){e.innerHTML=L.tFouls(tf);e.className=tf>=4?'bonus':''}const b=$('bTM');if(b){const n=tmLeft();b.textContent=n?L.tmBtn(n):L.tmNone;b.disabled=!n}}document.body.classList.toggle('playing',curTab==='partido'&&S.view==='play');wakeOn();prevM();$('minfo').textContent=vsT(S,S.rival||L.noRival);
 $('log').innerHTML=S.ev.slice(-15).reverse().map(e=>{if(e.k==='TM')return`<div>${qn(e.q)} · ${L.tmLog}</div>`;const j=S.jug.find(x=>x.id===e.p);return`<div>${qn(e.q)} · ${j?esc(dn(j)):'?'} — ${L.ev[e.k]||e.k}</div>`}).join('');
 $('titRes').textContent=`${vsT(S,S.rival||L.noRival)} · ${fmtF(S.fecha)} · ${rsT(S,P,S.rp)}`;
 window._rows=tablaDe([...S.jug].sort((a,b)=>st(S.ev,b.id).PTS-st(S.ev,a.id).PTS||ord(a,b)),S.ev,$('tabla'));renderPista();renderTemp();
