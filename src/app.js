@@ -125,7 +125,7 @@ td:first-child,th:first-child{text-align:left;position:sticky;left:0;background:
 function build(){
 const t=L.tabs,ids=['equipo','partido','resumen','historial','temporada'];
 document.body.innerHTML=`<style>${CSS}</style>
-<div class="top"><div class="brand"><img src="logo.jpg" class="logo" alt=""><div><div class="tname">Sant Pere Bàsquet</div><div class="tcat">${L.cat}</div></div></div><div class="hr"><button id="bCfg" aria-label="${L.setupShort}" onclick="setView('cfg')">⚙️</button><div class="lang"><button id="l-es" onclick="setLang('es')">ES</button><button id="l-ca" onclick="setLang('ca')">CA</button></div></div></div>
+<div class="top"><div class="brand"><img src="logo.jpg" class="logo" alt=""><div><div class="tname">Sant Pere Bàsquet</div><div class="tcat">${L.cat}</div></div></div><div class="hr"><button id="bCfg" aria-label="${L.setupShort}" onclick="setView('cfg')">🏀 ${L.tabs[1]}</button><div class="lang"><button id="l-es" onclick="setLang('es')">ES</button><button id="l-ca" onclick="setLang('ca')">CA</button></div></div></div>
 <div class="tabs">${ids.map((x,i)=>`<button id="t-${x}" onclick="tab('${x}')">${t[i]}</button>`).join('')}</div>
 <section id="equipo">
 <div class="row"><input id="dorsal" type="number" inputmode="numeric" placeholder="${L.num}"><input id="nombre" placeholder="${L.name}"><button onclick="addP()">＋</button></div>
@@ -263,7 +263,7 @@ body{padding-top:calc(env(safe-area-inset-top) + 10px)!important}
 .tcat{font-size:11.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#fff;opacity:.85;margin-top:3px}
 body.playing #marc{margin:14px 0 16px}body.playing .tinfo{margin:0 0 28px}#sel button{height:116px!important}
 .top .hr{display:flex;align-items:center;gap:10px;align-self:flex-start;flex:none}.hr .lang{align-self:center}
-#bCfg{display:none;width:34px;height:34px;padding:0;font-size:18px;line-height:32px;border-radius:50%;background:rgba(0,0,0,.25)!important;border:1px solid rgba(255,255,255,.45)!important}
+#bCfg{display:none;height:30px;padding:0 10px;font-size:12.5px;font-weight:700;line-height:28px;border-radius:999px;color:#fff;white-space:nowrap;background:rgba(0,0,0,.25)!important;border:1px solid rgba(255,255,255,.45)!important}
 body.playing #bCfg{display:block}
 .lang{display:flex;align-self:flex-start;border:1px solid rgba(255,255,255,.45);border-radius:999px;overflow:hidden;flex:none}
 .top .lang button{padding:3px 8px!important;font-size:10.5px!important;font-weight:700;border:0!important;border-radius:0!important;background:transparent!important;color:rgba(255,255,255,.8)!important;box-shadow:none!important}
