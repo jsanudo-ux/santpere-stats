@@ -1,0 +1,8 @@
+# Nunca subir datos de jugadoras ni copias de seguridad
+*.json
+!package.json
+*.bak
+copias/
+backups/
+node_modules/
+_site/
