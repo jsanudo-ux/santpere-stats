@@ -262,7 +262,8 @@ body{padding-top:calc(env(safe-area-inset-top) + 10px)!important}
 .jer{display:block;margin:0 auto 5px;flex:none}
 .tname{font:800 21px/1.05 'Barlow Condensed',system-ui,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#fff}
 .tcat{font-size:11.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#fff;opacity:.85;margin-top:3px}
-.top .hr{display:flex;align-items:center;gap:10px;align-self:flex-start;flex:none}.hr .lang{align-self:center}
+.top body.playing #marc{margin:6px 0 14px}body.playing .tinfo{margin:0 0 28px}
+.hr{display:flex;align-items:center;gap:10px;align-self:flex-start;flex:none}.hr .lang{align-self:center}
 #bCfg{display:none;width:34px;height:34px;padding:0;font-size:18px;line-height:32px;border-radius:50%;background:rgba(0,0,0,.25)!important;border:1px solid rgba(255,255,255,.45)!important}
 body.playing #bCfg{display:block}
 .lang{display:flex;align-self:flex-start;border:1px solid rgba(255,255,255,.45);border-radius:999px;overflow:hidden;flex:none}
