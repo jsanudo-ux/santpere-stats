@@ -23,7 +23,7 @@ backup:'Còpia de seguretat',bkCopy:'⬇️ Exportar còpia completa',bkRestore:
 let L=T[LANG]||T.es;
 const TEAM='Sant Pere';
 const nm2=j=>{const p=String(j.n).split(' ');return`<span class="nm2">${esc(p[0])}<b>${esc(p.slice(1).join(' '))||'&nbsp;'}</b></span>`};
-const jer=d=>`<svg class="jer" viewBox="-2 -2 74 92" width="40" height="46" aria-hidden="true"><path d="M15 0 L26 0 Q35 13 44 0 L55 0 L58 15 Q62 25 70 27 L70 82 Q35 88 0 82 L0 27 Q8 25 12 15 Z" fill="#D7141A" stroke="#fff" stroke-width="3"/><text x="35" y="62" text-anchor="middle" fill="#fff" font-size="${String(d).length>1?26:30}" font-weight="800" font-family="system-ui,sans-serif">${esc(d||'')}</text></svg>`;
+const jer=(d,g)=>`<svg class="jer" viewBox="-2 -2 74 92" width="${g?46:40}" height="${g?53:46}" aria-hidden="true"><path d="M15 0 L26 0 Q35 13 44 0 L55 0 L58 15 Q62 25 70 27 L70 82 Q35 88 0 82 L0 27 Q8 25 12 15 Z" fill="#D7141A" stroke="#fff" stroke-width="3"/><text x="35" y="62" text-anchor="middle" fill="#fff" font-size="${g?(String(d).length>1?32:36):(String(d).length>1?26:30)}" font-weight="800" font-family="system-ui,sans-serif">${esc(d||'')}</text></svg>`;
 const LOGO='logo.jpg';
 const KEYS=['T2+','T2-','T3+','T3-','TL+','TL-','RE','RO','RD','AS','RB','TP','PE','FA'];
 const hoy=()=>new Date().toISOString().slice(0,10);
@@ -262,7 +262,7 @@ body{padding-top:calc(env(safe-area-inset-top) + 10px)!important}
 .jer{display:block;margin:0 auto 5px;flex:none}
 .tname{font:800 21px/1.05 'Barlow Condensed',system-ui,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#fff}
 .tcat{font-size:11.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#fff;opacity:.85;margin-top:3px}
-body.playing #marc{margin:14px 0 16px}body.playing .tinfo{margin:0 0 40px}
+body.playing #marc{margin:14px 0 16px}body.playing .tinfo{margin:0 0 28px}#sel button{height:116px!important}
 .top .hr{display:flex;align-items:center;gap:10px;align-self:flex-start;flex:none}.hr .lang{align-self:center}
 #bCfg{display:none;width:34px;height:34px;padding:0;font-size:18px;line-height:32px;border-radius:50%;background:rgba(0,0,0,.25)!important;border:1px solid rgba(255,255,255,.45)!important}
 body.playing #bCfg{display:block}
@@ -375,7 +375,7 @@ function tablaDe(jug,ev,el){const ph=jug.map(actual);const rows=ph.map(j=>fila(d
 function render(){
 $('lista').innerHTML=S.jug.map(j=>`<div><input type="number" inputmode="numeric" placeholder="${L.num}" value="${esc(j.d)}" style="width:64px;padding:8px" onchange="cambiaD(${j.id},this.value)"><span class="info plnm">${esc(j.n)}</span><button onclick="delP(${j.id})">✕</button></div>`).join('')||`<p style="color:#888">${L.addHint}</p>`;
 const ae=document.activeElement;if(ae!==$('rival'))$('rival').value=S.rival||'';$('fecha').value=S.fecha||'';if(ae!==$('rp'))$('rp').value=S.rp||'';
-$('sel').innerHTML=S.jug.filter(j=>S.pista.includes(j.id)).map(j=>{const f=st(S.ev,j.id).FA;return`<button class="${cambio?(OUT.includes(j.id)?'sel':''):(cur===j.id?'on':'')}" data-id="${j.id}" onclick="tocaPista(${j.id})">${j.f?av(j):jer(j.d)}${nm2(j)}${f?` <span class="${f>=5?'warn':''}">F${f}</span>`:''}</button>`}).join('');
+$('sel').innerHTML=S.jug.filter(j=>S.pista.includes(j.id)).map(j=>{const f=st(S.ev,j.id).FA;return`<button class="${cambio?(OUT.includes(j.id)?'sel':''):(cur===j.id?'on':'')}" data-id="${j.id}" onclick="tocaPista(${j.id})">${j.f?av(j):jer(j.d,1)}${nm2(j)}${f?` <span class="${f>=5?'warn':''}">F${f}</span>`:''}</button>`}).join('');
 $('cuartos').innerHTML=[1,2,3,4,5].map(q=>`<button class="${S.q===q?'on':''}" onclick="S.q=${q};save();render()">${qn(q)}</button>`).join('');
 const P=st(S.ev,null).PTS;$('marc').innerHTML=marcador(P);{const r=$('bRedo');if(r)r.disabled=!(S.redo&&S.redo.length)}$('bL').classList.toggle('on',S.loc!=='V');$('bV').classList.toggle('on',S.loc==='V');$('pcfg').classList.toggle('hide',S.view==='play');$('pplay').classList.toggle('hide',S.view!=='play');{const tf=tFal();const e=$('tfal');if(e){e.innerHTML=L.tFouls(tf);e.className=tf>=4?'bonus':''}const b=$('bTM');if(b){const n=tmLeft();b.textContent=n?L.tmBtn(n):L.tmNone;b.disabled=!n}}document.body.classList.toggle('playing',curTab==='partido'&&S.view==='play');wakeOn();prevM();
 $('log').innerHTML=S.ev.slice(-15).reverse().map(e=>{if(e.k==='TM')return`<div>${qn(e.q)} · ${L.tmLog}</div>`;if(isR(e))return`<div>${qn(e.q)} · ${esc(S.rival||L.noRival)} +${e.k[1]}</div>`;const j=S.jug.find(x=>x.id===e.p);return`<div>${qn(e.q)} · ${j?esc(dn(j)):'?'} — ${L.ev[e.k]||e.k}</div>`}).join('');
