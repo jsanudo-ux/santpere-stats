@@ -164,7 +164,6 @@ ${['RE','AS','RB','TP','FA'].map(k=>`<button${k==='RE'?' class="rbb"':''}${k==='
 <section id="resumen" class="hide">
 <h2 id="titRes"></h2>
 <div class="tw"><table id="tabla"></table></div>
-<div class="row" style="margin-top:10px;align-items:center"><span style="flex:1">${L.rivalPts}</span><input id="rp" type="number" inputmode="numeric" style="width:90px" oninput="S.rp=this.value;save()"></div>
 <div class="grid">
 <button class="ok" style="grid-column:span 3" onclick="guardar()">${L.saveMatch}</button>
 <button class="on" style="grid-column:span 3" onclick="compartir(null)">${L.share}</button>
@@ -374,7 +373,7 @@ const KM=['J','PTS','T2','T3','TL','REB','AS','RB','TP','FA'];
 function tablaDe(jug,ev,el){const ph=jug.map(actual);const rows=ph.map(j=>fila(dn(j),st(ev,j.id)));rows.push(fila(L.total,st(ev,null)));pinta(el,KM,rows,ph);return[head(KM),...rows]}
 function render(){
 $('lista').innerHTML=S.jug.map(j=>`<div><input type="number" inputmode="numeric" placeholder="${L.num}" value="${esc(j.d)}" style="width:64px;padding:8px" onchange="cambiaD(${j.id},this.value)"><span class="info plnm">${esc(j.n)}</span><button onclick="delP(${j.id})">✕</button></div>`).join('')||`<p style="color:#888">${L.addHint}</p>`;
-const ae=document.activeElement;if(ae!==$('rival'))$('rival').value=S.rival||'';$('fecha').value=S.fecha||'';if(ae!==$('rp'))$('rp').value=S.rp||'';
+const ae=document.activeElement;if(ae!==$('rival'))$('rival').value=S.rival||'';$('fecha').value=S.fecha||'';
 $('sel').innerHTML=S.jug.filter(j=>S.pista.includes(j.id)).map(j=>{const f=st(S.ev,j.id).FA;return`<button class="${cambio?(OUT.includes(j.id)?'sel':''):(cur===j.id?'on':'')}" data-id="${j.id}" onclick="tocaPista(${j.id})">${j.f?av(j):jer(j.d,1)}${nm2(j)}${f?` <span class="${f>=5?'warn':''}">F${f}</span>`:''}</button>`}).join('');
 $('cuartos').innerHTML=[1,2,3,4,5].map(q=>`<button class="${S.q===q?'on':''}" onclick="S.q=${q};save();render()">${qn(q)}</button>`).join('');
 const P=st(S.ev,null).PTS;$('marc').innerHTML=marcador(P);{const r=$('bRedo');if(r)r.disabled=!(S.redo&&S.redo.length)}$('bL').classList.toggle('on',S.loc!=='V');$('bV').classList.toggle('on',S.loc==='V');$('pcfg').classList.toggle('hide',S.view==='play');$('pplay').classList.toggle('hide',S.view!=='play');{const tf=tFal();const e=$('tfal');if(e){e.innerHTML=L.tFouls(tf);e.className=tf>=4?'bonus':''}const b=$('bTM');if(b){const n=tmLeft();b.textContent=n?L.tmBtn(n):L.tmNone;b.disabled=!n}}document.body.classList.toggle('playing',curTab==='partido'&&S.view==='play');wakeOn();prevM();
