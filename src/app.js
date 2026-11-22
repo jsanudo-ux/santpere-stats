@@ -281,8 +281,8 @@ body.playing #bCfg{display:block}
 .sbt span{font:800 15px 'Barlow Condensed',system-ui;letter-spacing:1px;text-transform:uppercase;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.95}
 .score.sb .sbt b{font:800 52px/1 'Barlow Condensed',system-ui;margin-top:2px}
 .score.sb .sbt.rv b{opacity:.8}.score.sb .sbd{font:800 34px/1 'Barlow Condensed',system-ui;opacity:.6;padding-top:26px}
-#rvb{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;cursor:pointer;border-radius:12px;padding:2px 4px;background:rgba(0,0,0,.14)}
-#rvb.pop{animation:pop .35s ease-out}#rvb.gdel{background:rgba(0,0,0,.4)}
+#rvb{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;cursor:pointer;border-radius:12px;padding:2px 4px}
+#rvb.pop{animation:pop .35s ease-out}#rvb.gdel{background:rgba(0,0,0,.25)}
 .rhint{font-size:10.5px;opacity:.7;margin-top:4px;white-space:nowrap}
 #tfal{font-size:13px;color:#ccc;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.06)}#tfal.bonus{background:rgba(255,214,10,.2);color:#ffd60a;border:1px solid rgba(255,214,10,.5)}
 #bTM{padding:7px 12px;font-size:13px}#bTM:disabled{opacity:.4}
