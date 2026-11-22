@@ -3,7 +3,7 @@ let H=[],PL=[];
 let LANG='es';
 const T={
 es:{title:'Estadísticas del partido',tabs:['Plantilla','Partido','Resumen','Historial','Temporada'],num:'Nº',name:'Nombre (dorsal opcional)',photoHint:'Toca 📷 para poner o cambiar la foto.',savePl:'💾 Guardar plantilla',rival:'Rival (contra quién jugamos)',points:'Puntos',onCourt:'En pista · 2/3 toques +2/+3 · ↑REB ↓FAL →AST ←REC',onCourtN:n=>`En pista: ${n}/5 — elige del banquillo`,subs:'🔄 Cambios',endSubs:'✔ Terminar cambios',bench:'Toca la que sale y después la que entra. Para varios cambios, marca primero todas las que salen.',doSubs:'Hacer cambios',pickEq:'Marca el mismo número de jugadoras que salen y que entran',benchOut:'Sacar sin cambio',
-btn:{RE:'Rebote',RO:'Reb. Of.',RD:'Reb. Def.',AS:'Asist.',RB:'Recuperación',TP:'Tapón',PE:'Pérdida',FA:'Falta'},undo:'↶ Deshacer',redo:'↷ Rehacer',foulFx:'+1 FALTA',gFx:{FA:'+1 FALTA',RE:'+1 REB',AS:'+1 AST',RB:'+1 REC'},rivalPts:'Puntos del rival:',saveMatch:'💾 Guardar partido en el historial',copy:'Copiar resumen',del:'Borrar',back:'← Volver',remove:'Eliminar',totals:'Totales de la temporada',avgs:'Medias por partido',copySeason:'Copiar estadísticas de temporada',yes:'Sí',no:'No',
+btn:{RE:'Rebote',RO:'Reb. Of.',RD:'Reb. Def.',AS:'Asist.',RB:'Recuperación',TP:'Tapón',PE:'Pérdida',FA:'Falta'},undo:'↶ Deshacer',redo:'↷ Rehacer',foulFx:'+1 FALTA',gFx:{FA:'+1 FALTA',RE:'+1 REB',AS:'+1 AST',RB:'+1 REC'},rivalPts:'Puntos del rival:',saveMatch:'💾 Guardar partido en el historial',endMatch:'🏁 Finalizar partido y pasarlo al historial',copy:'Copiar resumen',del:'Borrar',back:'← Volver',remove:'Eliminar',totals:'Totales de la temporada',avgs:'Medias por partido',copySeason:'Copiar estadísticas de temporada',yes:'Sí',no:'No',
 noRival:'(sin rival)',matches:'partidos',W:'G',L:'P',noMatches:'Aún no hay partidos guardados.',noMatchesH:'Aún no hay partidos guardados. Al terminar un partido, pulsa «Guardar partido» en Resumen.',addHint:'Añade jugadoras con nombre (el dorsal es opcional y se puede cambiar luego).',
 cols:{J:'Jugadora',PJ:'Partidos jugados',PTS:'Puntos',T2:'Tiros de 2',T3:'Tiros de 3',TL:'Tiros libres',RO:'Rebotes ofensivos',RD:'Rebotes defensivos',REB:'Rebotes',AS:'Asistencias',RB:'Recuperaciones',TP:'Tapones',PE:'Pérdidas',FA:'Faltas'},total:'TOTAL',team:'EQUIPO',
 ev:{'T2+':'Canasta de 2','T2-':'Fallo de 2','T3+':'Triple','T3-':'Fallo de 3','TL+':'Tiro libre','TL-':'Fallo TL',RE:'Rebote',RO:'Rebote of.',RD:'Rebote def.',AS:'Asistencia',RB:'Recuperación',TP:'Tapón',PE:'Pérdida',FA:'Falta'},
@@ -12,7 +12,7 @@ savingD:'Guardando…',plSaved:'Plantilla guardada.',localOnly:'Guardado solo en
 confSave:r=>`¿Guardar el partido contra ${r} y empezar uno nuevo?`,confDelP:'¿Quitar a esta jugadora y sus estadísticas del partido actual?',confDelH:'¿Eliminar este partido del historial?',confNew:'¿Borrar las estadísticas de este partido sin guardarlo? (La plantilla se conserva)',resSaved:'Resultado guardado.',copied:'Copiado. Pégalo en WhatsApp, Excel o notas.',copyFail:'No se pudo copiar.',
 backup:'Copia de seguridad',bkCopy:'⬇️ Exportar copia completa',bkRestore:'⬆️ Importar copia',expOk:c=>`Copia exportada: ${c.jugadoras} jugadoras, ${c.partidos} partidos, ${c.acciones} acciones.`,impOk:(p,j)=>`Importado: ${p} partidos y ${j} jugadoras nuevas.`,holdImg:'Mantén pulsada la imagen para guardarla o compartirla.',upd:'Nueva versión disponible',updBtn:'Actualizar',bkPaste:'Pega aquí una copia de seguridad para restaurarla',bkOk:'Copia restaurada.',bkBad:'El texto no es una copia válida.',bkConf:'¿Importar esta copia? Se añadirán los partidos y jugadoras que falten; no se borra nada.',bkHint:'Exporta un archivo con todos los datos (jugadoras, fotos, partidos y partido en curso) y guárdalo en iCloud después de cada partido.',pts:'pts',home:'Local',away:'Visitante',fAll:'Todos',fHome:'En casa',fAway:'Fuera',fRivAll:'Todos los rivales',fNAll:'Toda la temporada',fLast:n=>`Últimos ${n}`,tapP:'Toca una jugadora para ver su ficha.',pg:'partido',cPts:'Puntos por partido',cFg:'% tiro de campo (T2+T3)',byMatch:'Partido a partido',shareJ:'📲 Compartir ficha',bestG:'Mejor partido',askBk:'Partido guardado. ¿Guardar ahora una copia en iCloud?',bkFull:'♻️ Restaurar copia completa (sustituye todo)',bkFullConf:(p,j)=>`Se BORRARÁN todos los datos actuales y se sustituirán por los de la copia (${p} partidos, ${j} jugadoras). ¿Continuar?`,bkFullOk:(p,j)=>`Restaurado: ${p} partidos y ${j} jugadoras.`,editBtn:'✏️ Corregir acciones',editDone:'✔ Terminar corrección',editHint:'Cambia el cuarto, la jugadora o la acción, o elimina las que sobren. Se guarda al momento. Arriba están las más recientes.',addAct:'＋ Añadir acción',delAct:'¿Eliminar esta acción?',rivHint:'1·2·3 toques · ↓ quitar',tFouls:n=>`Faltas de equipo: <b>${n}</b>`,bonus:'⚠ 4 faltas de equipo en este cuarto: a partir de ahora el rival tira tiros libres',tmBtn:n=>`⏱ Tiempo muerto · quedan ${n}`,tmNone:'⏱ Sin tiempos muertos',tmLog:'⏱ Tiempo muerto',ourTeam:'Nuestro equipo',rivalTeam:'Equipo rival',rivalPh:'Nombre del rival',whereQ:'¿Dónde juega Sant Pere?',homeB:'En casa (local)',awayB:'Fuera (visitante)',dateL:'Fecha del partido',prev:t=>`Se mostrará así: <b>${t}</b>`,rebL:{RO:'Rebote ofensivo',RD:'Rebote defensivo'},cat:'Cadete Femenino 1.er año',setup:'Configuración del partido',setupShort:'Configurar',start:'▶ Empezar a anotar',reset:'↺ Reiniciar estadísticas',delMatch:'🗑️ Eliminar partido',confDelM:'¿Eliminar el partido en curso? Se borran rival, fecha y estadísticas.',share:'📲 Compartir',shareImg:'📤 Compartir imagen',genImg:'Generando imagen…',noShare:'No se pudo compartir la imagen. Haz una captura de pantalla.',shareHint:'Haz una captura de pantalla de la tarjeta y envíala por WhatsApp, o copia el texto.',copyWa:'💬 Copiar texto para WhatsApp',close:'✕ Cerrar',top:'Destacadas',topPts:'Máxima anotadora',topReb:'Más rebotes',topAs:'Más asistencias',players:'Jugadoras',reb:'reb',ast:'asist',stl:'recup',of:'of',def:'def',blk:'tap',tov:'pérd',pf:'faltas',g:{REB:'Reb',RO:'R.Of',RD:'R.Def',AS:'Asist',RB:'Recup',TP:'Tap',PE:'Pérd',FA:'Falt'},win:'VICTORIA',loss:'DERROTA',draw:'EMPATE',teamW:'Equipo',shooting:'Tiro'},
 ca:{title:'Estadístiques del partit',tabs:['Plantilla','Partit','Resum','Historial','Temporada'],num:'Núm.',name:'Nom (dorsal opcional)',photoHint:'Toca 📷 per posar o canviar la foto.',savePl:'💾 Desar plantilla',rival:'Rival (contra qui juguem)',points:'Punts',onCourt:'A pista · 2/3 tocs +2/+3 · ↑REB ↓FAL →AST ←REC',onCourtN:n=>`A pista: ${n}/5 — tria de la banqueta`,subs:'🔄 Canvis',endSubs:'✔ Acabar canvis',bench:'Toca la que surt i després la que entra. Per a diversos canvis, marca primer totes les que surten.',doSubs:'Fer canvis',pickEq:'Marca el mateix nombre de jugadores que surten i que entren',benchOut:'Treure sense canvi',
-btn:{RE:'Rebot',RO:'Reb. Of.',RD:'Reb. Def.',AS:'Assist.',RB:'Recuperació',TP:'Tap',PE:'Pèrdua',FA:'Falta'},undo:'↶ Desfer',redo:'↷ Refer',foulFx:'+1 FALTA',gFx:{FA:'+1 FALTA',RE:'+1 REB',AS:'+1 AST',RB:'+1 REC'},rivalPts:'Punts del rival:',saveMatch:'💾 Desar partit a l\'historial',copy:'Copiar resum',del:'Esborrar',back:'← Tornar',remove:'Eliminar',totals:'Totals de la temporada',avgs:'Mitjanes per partit',copySeason:'Copiar estadístiques de temporada',yes:'Sí',no:'No',
+btn:{RE:'Rebot',RO:'Reb. Of.',RD:'Reb. Def.',AS:'Assist.',RB:'Recuperació',TP:'Tap',PE:'Pèrdua',FA:'Falta'},undo:'↶ Desfer',redo:'↷ Refer',foulFx:'+1 FALTA',gFx:{FA:'+1 FALTA',RE:'+1 REB',AS:'+1 AST',RB:'+1 REC'},rivalPts:'Punts del rival:',endMatch:'🏁 Finalitzar partit i passar-lo a l\'historial',saveMatch:'💾 Desar partit a l\'historial',copy:'Copiar resum',del:'Esborrar',back:'← Tornar',remove:'Eliminar',totals:'Totals de la temporada',avgs:'Mitjanes per partit',copySeason:'Copiar estadístiques de temporada',yes:'Sí',no:'No',
 noRival:'(sense rival)',matches:'partits',W:'G',L:'P',noMatches:'Encara no hi ha partits desats.',noMatchesH:'Encara no hi ha partits desats. En acabar un partit, prem «Desar partit» a Resum.',addHint:'Afegeix jugadores amb el nom (el dorsal és opcional i es pot canviar després).',
 cols:{J:'Jugadora',PJ:'Partits jugats',PTS:'Punts',T2:'Tirs de 2',T3:'Tirs de 3',TL:'Tirs lliures',RO:'Rebots ofensius',RD:'Rebots defensius',REB:'Rebots',AS:'Assistències',RB:'Recuperacions',TP:'Taps',PE:'Pèrdues',FA:'Faltes'},total:'TOTAL',team:'EQUIP',
 ev:{'T2+':'Cistella de 2','T2-':'Fallada de 2','T3+':'Triple','T3-':'Fallada de 3','TL+':'Tir lliure','TL-':'Fallada TL',RE:'Rebot',RO:'Rebot of.',RD:'Rebot def.',AS:'Assistència',RB:'Recuperació',TP:'Tap',PE:'Pèrdua',FA:'Falta'},
@@ -23,7 +23,7 @@ backup:'Còpia de seguretat',bkCopy:'⬇️ Exportar còpia completa',bkRestore:
 let L=T[LANG]||T.es;
 const TEAM='Sant Pere';
 const nm2=j=>{const p=String(j.n).split(' ');return`<span class="nm2">${esc(p[0])}<b>${esc(p.slice(1).join(' '))||'&nbsp;'}</b></span>`};
-const jer=d=>`<svg class="jer" viewBox="-2 -2 74 92" width="40" height="46" aria-hidden="true"><path d="M15 0 L26 0 Q35 13 44 0 L55 0 L58 15 Q62 25 70 27 L70 82 Q35 88 0 82 L0 27 Q8 25 12 15 Z" fill="#D7141A" stroke="#fff" stroke-width="3"/><text x="35" y="62" text-anchor="middle" fill="#fff" font-size="${String(d).length>1?26:30}" font-weight="800" font-family="system-ui,sans-serif">${esc(d||'')}</text></svg>`;
+const jer=(d,g)=>`<svg class="jer" viewBox="-2 -2 74 92" width="${g?46:40}" height="${g?53:46}" aria-hidden="true"><path d="M15 0 L26 0 Q35 13 44 0 L55 0 L58 15 Q62 25 70 27 L70 82 Q35 88 0 82 L0 27 Q8 25 12 15 Z" fill="#D7141A" stroke="#fff" stroke-width="3"/><text x="35" y="62" text-anchor="middle" fill="#fff" font-size="${g?(String(d).length>1?32:36):(String(d).length>1?26:30)}" font-weight="800" font-family="system-ui,sans-serif">${esc(d||'')}</text></svg>`;
 const LOGO='logo.jpg';
 const KEYS=['T2+','T2-','T3+','T3-','TL+','TL-','RE','RO','RD','AS','RB','TP','PE','FA'];
 const hoy=()=>new Date().toISOString().slice(0,10);
@@ -78,7 +78,7 @@ textarea{width:100%;height:80px;font-size:12px;margin:6px 0}
 .row{display:flex;gap:6px;margin-bottom:8px}
 .row input:first-child{width:70px}.row input:nth-child(2){flex:1}
 .list>div{display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid #333;gap:6px}
-.list .info{flex:1}.plnm{font-size:20px;font-weight:800;letter-spacing:.3px;line-height:1.15;padding-left:4px}.list small{color:#999}
+.list .info{flex:1}.plnm{font-size:17px;font-weight:700;letter-spacing:.3px;line-height:1.15;padding-left:4px}.list small{color:#999}
 .tw{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:12px}
 th,td{padding:5px 3px;text-align:center;border-bottom:1px solid #333;white-space:nowrap}
@@ -125,7 +125,7 @@ td:first-child,th:first-child{text-align:left;position:sticky;left:0;background:
 function build(){
 const t=L.tabs,ids=['equipo','partido','resumen','historial','temporada'];
 document.body.innerHTML=`<style>${CSS}</style>
-<div class="top"><div class="brand"><img src="logo.jpg" class="logo" alt=""><div><div class="tname">Sant Pere Bàsquet</div><div class="tcat">${L.cat}</div></div></div><div class="hr"><button id="bCfg" aria-label="${L.setupShort}" onclick="setView('cfg')">⚙️</button><div class="lang"><button id="l-es" onclick="setLang('es')">ES</button><button id="l-ca" onclick="setLang('ca')">CA</button></div></div></div>
+<div class="top"><div class="brand"><img src="logo.jpg" class="logo" alt=""><div><div class="tname">Sant Pere Bàsquet</div><div class="tcat">${L.cat}</div></div></div><div class="hr"><button id="bCfg" aria-label="${L.setupShort}" onclick="setView('cfg')">🏀 ${L.tabs[1]}</button><div class="lang"><button id="l-es" onclick="setLang('es')">ES</button><button id="l-ca" onclick="setLang('ca')">CA</button></div></div></div>
 <div class="tabs">${ids.map((x,i)=>`<button id="t-${x}" onclick="tab('${x}')">${t[i]}</button>`).join('')}</div>
 <section id="equipo">
 <div class="row"><input id="dorsal" type="number" inputmode="numeric" placeholder="${L.num}"><input id="nombre" placeholder="${L.name}"><button onclick="addP()">＋</button></div>
@@ -145,6 +145,8 @@ document.body.innerHTML=`<style>${CSS}</style>
 <div class="mprev" id="mprev"></div>
 <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:8px"><button onclick="nuevo()">${L.reset}</button><button class="ko" onclick="eliminarM()">${L.delMatch}</button></div>
 <button class="on" style="width:100%;margin-top:16px;padding:16px;font-size:17px" onclick="setView('play')">${L.start}</button>
+<button class="ok" style="width:100%;margin-top:10px;padding:14px" onclick="guardar()">${L.endMatch}</button>
+<p id="msg" class="msg"></p>
 </div>
 <div id="pplay">
 <div class="score sb" id="marc"></div>
@@ -164,13 +166,10 @@ ${['RE','AS','RB','TP','FA'].map(k=>`<button${k==='RE'?' class="rbb"':''}${k==='
 <section id="resumen" class="hide">
 <h2 id="titRes"></h2>
 <div class="tw"><table id="tabla"></table></div>
-<div class="row" style="margin-top:10px;align-items:center"><span style="flex:1">${L.rivalPts}</span><input id="rp" type="number" inputmode="numeric" style="width:90px" oninput="S.rp=this.value;save()"></div>
 <div class="grid">
-<button class="ok" style="grid-column:span 3" onclick="guardar()">${L.saveMatch}</button>
 <button class="on" style="grid-column:span 3" onclick="compartir(null)">${L.share}</button>
 <button onclick="copiar(_rows)" style="grid-column:span 2">${L.copy}</button><button onclick="nuevo()">${L.del}</button>
 </div>
-<p id="msg" class="msg"></p>
 </section>
 <section id="historial" class="hide">
 <div id="hlist" class="list"></div>
@@ -262,8 +261,9 @@ body{padding-top:calc(env(safe-area-inset-top) + 10px)!important}
 .jer{display:block;margin:0 auto 5px;flex:none}
 .tname{font:800 21px/1.05 'Barlow Condensed',system-ui,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#fff}
 .tcat{font-size:11.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#fff;opacity:.85;margin-top:3px}
+body.playing #marc{margin:14px 0 16px}body.playing .tinfo{margin:0 0 28px}#sel button{height:116px!important}
 .top .hr{display:flex;align-items:center;gap:10px;align-self:flex-start;flex:none}.hr .lang{align-self:center}
-#bCfg{display:none;width:34px;height:34px;padding:0;font-size:18px;line-height:32px;border-radius:50%;background:rgba(0,0,0,.25)!important;border:1px solid rgba(255,255,255,.45)!important}
+#bCfg{display:none;height:30px;padding:0 10px;font-size:12.5px;font-weight:700;line-height:28px;border-radius:999px;color:#fff;white-space:nowrap;background:rgba(0,0,0,.25)!important;border:1px solid rgba(255,255,255,.45)!important}
 body.playing #bCfg{display:block}
 .lang{display:flex;align-self:flex-start;border:1px solid rgba(255,255,255,.45);border-radius:999px;overflow:hidden;flex:none}
 .top .lang button{padding:3px 8px!important;font-size:10.5px!important;font-weight:700;border:0!important;border-radius:0!important;background:transparent!important;color:rgba(255,255,255,.8)!important;box-shadow:none!important}
@@ -289,7 +289,7 @@ body.playing #bCfg{display:block}
 #toastb{position:fixed;left:10px;right:10px;top:calc(env(safe-area-inset-top) + 8px);z-index:110;display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(28,28,30,.96);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:10px 12px;color:#fff;font-size:15px;font-weight:600;transform:translateY(-160%);transition:transform .25s ease;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.5)}
 #toastb.on{transform:none;pointer-events:auto}#toastb button{padding:8px 12px;font-size:14px;flex:none}
 body.playing .top{padding:6px 10px!important;margin-bottom:8px!important}body.playing .logo{width:30px;height:28px;border-radius:7px}body.playing .tname{font-size:16px}body.playing .tcat{display:none}
-body.playing .tabs{margin-bottom:6px}body.playing .tabs button{padding:7px 2px}
+
 body.playing .score{padding:6px 10px!important;margin-bottom:8px}body.playing .score b{font-size:28px}body.playing .q button{padding:6px 9px}
 body.playing #pplay>div:first-child{margin-bottom:4px!important}
 .er{display:grid;grid-template-columns:52px 1fr 1fr 40px;gap:4px;margin-bottom:4px}
@@ -373,8 +373,8 @@ const KM=['J','PTS','T2','T3','TL','REB','AS','RB','TP','FA'];
 function tablaDe(jug,ev,el){const ph=jug.map(actual);const rows=ph.map(j=>fila(dn(j),st(ev,j.id)));rows.push(fila(L.total,st(ev,null)));pinta(el,KM,rows,ph);return[head(KM),...rows]}
 function render(){
 $('lista').innerHTML=S.jug.map(j=>`<div><input type="number" inputmode="numeric" placeholder="${L.num}" value="${esc(j.d)}" style="width:64px;padding:8px" onchange="cambiaD(${j.id},this.value)"><span class="info plnm">${esc(j.n)}</span><button onclick="delP(${j.id})">✕</button></div>`).join('')||`<p style="color:#888">${L.addHint}</p>`;
-const ae=document.activeElement;if(ae!==$('rival'))$('rival').value=S.rival||'';$('fecha').value=S.fecha||'';if(ae!==$('rp'))$('rp').value=S.rp||'';
-$('sel').innerHTML=S.jug.filter(j=>S.pista.includes(j.id)).map(j=>{const f=st(S.ev,j.id).FA;return`<button class="${cambio?(OUT.includes(j.id)?'sel':''):(cur===j.id?'on':'')}" data-id="${j.id}" onclick="tocaPista(${j.id})">${j.f?av(j):jer(j.d)}${nm2(j)}${f?` <span class="${f>=5?'warn':''}">F${f}</span>`:''}</button>`}).join('');
+const ae=document.activeElement;if(ae!==$('rival'))$('rival').value=S.rival||'';$('fecha').value=S.fecha||'';
+$('sel').innerHTML=S.jug.filter(j=>S.pista.includes(j.id)).map(j=>{const f=st(S.ev,j.id).FA;return`<button class="${cambio?(OUT.includes(j.id)?'sel':''):(cur===j.id?'on':'')}" data-id="${j.id}" onclick="tocaPista(${j.id})">${j.f?av(j):jer(j.d,1)}${nm2(j)}${f?` <span class="${f>=5?'warn':''}">F${f}</span>`:''}</button>`}).join('');
 $('cuartos').innerHTML=[1,2,3,4,5].map(q=>`<button class="${S.q===q?'on':''}" onclick="S.q=${q};save();render()">${qn(q)}</button>`).join('');
 const P=st(S.ev,null).PTS;$('marc').innerHTML=marcador(P);{const r=$('bRedo');if(r)r.disabled=!(S.redo&&S.redo.length)}$('bL').classList.toggle('on',S.loc!=='V');$('bV').classList.toggle('on',S.loc==='V');$('pcfg').classList.toggle('hide',S.view==='play');$('pplay').classList.toggle('hide',S.view!=='play');{const tf=tFal();const e=$('tfal');if(e){e.innerHTML=L.tFouls(tf);e.className=tf>=4?'bonus':''}const b=$('bTM');if(b){const n=tmLeft();b.textContent=n?L.tmBtn(n):L.tmNone;b.disabled=!n}}document.body.classList.toggle('playing',curTab==='partido'&&S.view==='play');wakeOn();prevM();
 $('log').innerHTML=S.ev.slice(-15).reverse().map(e=>{if(e.k==='TM')return`<div>${qn(e.q)} · ${L.tmLog}</div>`;if(isR(e))return`<div>${qn(e.q)} · ${esc(S.rival||L.noRival)} +${e.k[1]}</div>`;const j=S.jug.find(x=>x.id===e.p);return`<div>${qn(e.q)} · ${j?esc(dn(j)):'?'} — ${L.ev[e.k]||e.k}</div>`}).join('');
