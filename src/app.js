@@ -125,7 +125,7 @@ td:first-child,th:first-child{text-align:left;position:sticky;left:0;background:
 function build(){
 const t=L.tabs,ids=['equipo','partido','resumen','historial','temporada'];
 document.body.innerHTML=`<style>${CSS}</style>
-<div class="top"><div class="brand"><img src="logo.jpg" class="logo" alt=""><div><div class="tname">Sant Pere Bàsquet</div><div class="tcat">${L.cat}</div></div></div><div class="lang"><button id="l-es" onclick="setLang('es')">ES</button><button id="l-ca" onclick="setLang('ca')">CA</button></div></div>
+<div class="top"><div class="brand"><img src="logo.jpg" class="logo" alt=""><div><div class="tname">Sant Pere Bàsquet</div><div class="tcat">${L.cat}</div></div></div><div class="hr"><button id="bCfg" aria-label="${L.setupShort}" onclick="setView('cfg')">⚙️</button><div class="lang"><button id="l-es" onclick="setLang('es')">ES</button><button id="l-ca" onclick="setLang('ca')">CA</button></div></div></div>
 <div class="tabs">${ids.map((x,i)=>`<button id="t-${x}" onclick="tab('${x}')">${t[i]}</button>`).join('')}</div>
 <section id="equipo">
 <div class="row"><input id="dorsal" type="number" inputmode="numeric" placeholder="${L.num}"><input id="nombre" placeholder="${L.name}"><button onclick="addP()">＋</button></div>
@@ -146,7 +146,7 @@ document.body.innerHTML=`<style>${CSS}</style>
 <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:8px"><button onclick="nuevo()">${L.reset}</button><button class="ko" onclick="eliminarM()">${L.delMatch}</button></div>
 <button class="on" style="width:100%;margin-top:16px;padding:16px;font-size:17px" onclick="setView('play')">${L.start}</button>
 </div>
-<div id="pplay"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px"><b id="minfo" style="font-size:14px"></b><button style="padding:8px 12px;font-size:13px;flex:none" onclick="setView('cfg')">⚙️ ${L.setupShort}</button></div>
+<div id="pplay">
 <div class="score sb" id="marc"></div>
 <div class="tinfo"><span id="tfal"></span><div class="q" id="cuartos"></div></div>
 <div class="lbl" id="lblPista"></div>
@@ -262,7 +262,10 @@ body{padding-top:calc(env(safe-area-inset-top) + 10px)!important}
 .jer{display:block;margin:0 auto 5px;flex:none}
 .tname{font:800 21px/1.05 'Barlow Condensed',system-ui,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#fff}
 .tcat{font-size:11.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#fff;opacity:.85;margin-top:3px}
-.top .lang{display:flex;align-self:flex-start;border:1px solid rgba(255,255,255,.45);border-radius:999px;overflow:hidden;flex:none}
+.top .hr{display:flex;align-items:center;gap:10px;align-self:flex-start;flex:none}.hr .lang{align-self:center}
+#bCfg{display:none;width:34px;height:34px;padding:0;font-size:18px;line-height:32px;border-radius:50%;background:rgba(0,0,0,.25)!important;border:1px solid rgba(255,255,255,.45)!important}
+body.playing #bCfg{display:block}
+.lang{display:flex;align-self:flex-start;border:1px solid rgba(255,255,255,.45);border-radius:999px;overflow:hidden;flex:none}
 .top .lang button{padding:3px 8px!important;font-size:10.5px!important;font-weight:700;border:0!important;border-radius:0!important;background:transparent!important;color:rgba(255,255,255,.8)!important;box-shadow:none!important}
 .top .lang button.on{background:#fff!important;color:#d7141a!important}
 .mup{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px}
@@ -373,7 +376,7 @@ $('lista').innerHTML=S.jug.map(j=>`<div><input type="number" inputmode="numeric"
 const ae=document.activeElement;if(ae!==$('rival'))$('rival').value=S.rival||'';$('fecha').value=S.fecha||'';if(ae!==$('rp'))$('rp').value=S.rp||'';
 $('sel').innerHTML=S.jug.filter(j=>S.pista.includes(j.id)).map(j=>{const f=st(S.ev,j.id).FA;return`<button class="${cambio?(OUT.includes(j.id)?'sel':''):(cur===j.id?'on':'')}" data-id="${j.id}" onclick="tocaPista(${j.id})">${j.f?av(j):jer(j.d)}${nm2(j)}${f?` <span class="${f>=5?'warn':''}">F${f}</span>`:''}</button>`}).join('');
 $('cuartos').innerHTML=[1,2,3,4,5].map(q=>`<button class="${S.q===q?'on':''}" onclick="S.q=${q};save();render()">${qn(q)}</button>`).join('');
-const P=st(S.ev,null).PTS;$('marc').innerHTML=marcador(P);{const r=$('bRedo');if(r)r.disabled=!(S.redo&&S.redo.length)}$('bL').classList.toggle('on',S.loc!=='V');$('bV').classList.toggle('on',S.loc==='V');$('pcfg').classList.toggle('hide',S.view==='play');$('pplay').classList.toggle('hide',S.view!=='play');{const tf=tFal();const e=$('tfal');if(e){e.innerHTML=L.tFouls(tf);e.className=tf>=4?'bonus':''}const b=$('bTM');if(b){const n=tmLeft();b.textContent=n?L.tmBtn(n):L.tmNone;b.disabled=!n}}document.body.classList.toggle('playing',curTab==='partido'&&S.view==='play');wakeOn();prevM();$('minfo').textContent='';
+const P=st(S.ev,null).PTS;$('marc').innerHTML=marcador(P);{const r=$('bRedo');if(r)r.disabled=!(S.redo&&S.redo.length)}$('bL').classList.toggle('on',S.loc!=='V');$('bV').classList.toggle('on',S.loc==='V');$('pcfg').classList.toggle('hide',S.view==='play');$('pplay').classList.toggle('hide',S.view!=='play');{const tf=tFal();const e=$('tfal');if(e){e.innerHTML=L.tFouls(tf);e.className=tf>=4?'bonus':''}const b=$('bTM');if(b){const n=tmLeft();b.textContent=n?L.tmBtn(n):L.tmNone;b.disabled=!n}}document.body.classList.toggle('playing',curTab==='partido'&&S.view==='play');wakeOn();prevM();
 $('log').innerHTML=S.ev.slice(-15).reverse().map(e=>{if(e.k==='TM')return`<div>${qn(e.q)} · ${L.tmLog}</div>`;if(isR(e))return`<div>${qn(e.q)} · ${esc(S.rival||L.noRival)} +${e.k[1]}</div>`;const j=S.jug.find(x=>x.id===e.p);return`<div>${qn(e.q)} · ${j?esc(dn(j)):'?'} — ${L.ev[e.k]||e.k}</div>`}).join('');
 $('titRes').textContent=`${vsT(S,S.rival||L.noRival)} · ${fmtF(S.fecha)} · ${rsT(S,P,S.rp)}`;
 window._rows=tablaDe([...S.jug].sort((a,b)=>st(S.ev,b.id).PTS-st(S.ev,a.id).PTS||ord(a,b)),S.ev,$('tabla'));renderPista();renderTemp();
