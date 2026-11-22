@@ -443,11 +443,11 @@ $('share').innerHTML=`<style>#share{background:radial-gradient(120% 60% at 50% 0
 #share .shb2{position:fixed;left:0;right:0;bottom:0;display:flex;gap:8px;padding:10px;background:rgba(10,10,10,.6);backdrop-filter:blur(12px)}#share .shb2 button{flex:1;border-radius:12px;font-size:14px}
 #wamsg{position:fixed;bottom:64px;left:0;right:0;text-align:center}</style>
 <div class="sw"><div class="k" id="kard"><div class="jt" style="text-align:center">Sant Pere Bàsquet · ${L.cat}</div>
-<div class="jh">${j.f?`<img class="fav" src="${j.f}">`:jer(j.d)}<div><div class="jn">${esc(j.n)}</div><div class="js">${j.d!==''?'#'+esc(j.d)+' · ':''}${pj} ${L.matches}</div></div></div>
+<div class="jh">${j.f?`<img class="fav" src="${j.f}">`:jer(j.d)}<div><div class="jn">${esc(j.n)}</div><div class="js">${j.f&&j.d!==''?'#'+esc(j.d)+' · ':''}${pj} ${L.matches}</div></div></div>
 <div class="jt">${L.avgs}</div><div class="jg">${[['PTS',av(T.PTS)],['REB',av(T.REB)],['AST',av(T.AS)],['REC',av(T.RB)]].map(([a,b])=>`<div><b>${b}</b><span>${a}</span></div>`).join('')}</div>
 <div class="jg g3">${['T2','T3','TL'].map(k=>`<div><b>${pc(k)}</b><span>${k} ${T[k+'+']}/${T[k+'+']+T[k+'-']}</span></div>`).join('')}</div>
 <div class="jt">${L.cPts}</div>${barras(D.map(d=>d.s.PTS),D.map(d=>String(d.m.rival).trim().slice(0,7)),v=>v)}
-${best?`<div class="jbest">⭐ ${L.bestG}: <b>${best.s.PTS} ${L.pts}</b> vs ${esc(String(best.m.rival).trim())} (${fmtF(best.m.fecha)})</div>`:''}</div></div>
+</div></div>
 <p id="wamsg" class="msg"></p><div class="shb2"><button class="on" onclick="shareImg()">${L.shareImg}</button><button onclick="$('share').classList.add('hide')" style="flex:none;width:56px">✕</button></div>`;
 $('share').classList.remove('hide');$('share').scrollTop=0;
 const fit=()=>{const k=$('kard');if(!k)return;k.style.transform='';const sc=Math.min(1,(innerWidth-12)/380,(innerHeight-84)/k.offsetHeight);k.style.transform=`scale(${sc})`;k.parentNode.style.height=(k.offsetHeight*sc+8)+'px'};fit();setTimeout(fit,60);onresize=fit;setTimeout(()=>{SHB=genImg().catch(()=>null)},400)}
