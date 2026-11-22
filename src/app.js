@@ -125,7 +125,7 @@ td:first-child,th:first-child{text-align:left;position:sticky;left:0;background:
 function build(){
 const t=L.tabs,ids=['equipo','partido','resumen','historial','temporada'];
 document.body.innerHTML=`<style>${CSS}</style>
-<div class="top"><div class="brand"><img src="logo.jpg" class="logo" alt=""><div><div class="tname">Sant Pere Bàsquet</div><div class="tcat">${L.cat}</div></div></div><div class="hr"><button id="bCfg" aria-label="${L.setupShort}" onclick="setView('cfg')">🏀 ${L.tabs[1]}</button><div class="lang"><button id="l-es" onclick="setLang('es')">ES</button><button id="l-ca" onclick="setLang('ca')">CA</button></div></div></div>
+<div class="top"><div class="brand"><img src="logo.jpg" class="logo" alt=""><div><div class="tname">Bàsquet Sant Pere</div><div class="tcat">${L.cat}</div></div></div><div class="hr"><button id="bCfg" aria-label="${L.setupShort}" onclick="setView('cfg')">🏀 ${L.tabs[1]}</button><div class="lang"><button id="l-es" onclick="setLang('es')">ES</button><button id="l-ca" onclick="setLang('ca')">CA</button></div></div></div>
 <div class="tabs">${ids.map((x,i)=>`<button id="t-${x}" onclick="tab('${x}')">${t[i]}</button>`).join('')}</div>
 <section id="equipo">
 <div class="row"><input id="dorsal" type="number" inputmode="numeric" placeholder="${L.num}"><input id="nombre" placeholder="${L.name}"><button onclick="addP()">＋</button></div>
@@ -469,7 +469,7 @@ $('share').innerHTML=`<style>#share{background:radial-gradient(120% 60% at 50% 0
 #share .jbest{font:600 13px system-ui;text-align:center;background:rgba(0,0,0,.25);border-radius:12px;padding:8px}
 #share .shb2{position:fixed;left:0;right:0;bottom:0;display:flex;gap:8px;padding:10px;background:rgba(10,10,10,.6);backdrop-filter:blur(12px)}#share .shb2 button{flex:1;border-radius:12px;font-size:14px}
 #wamsg{position:fixed;bottom:64px;left:0;right:0;text-align:center}</style>
-<div class="sw"><div class="k" id="kard"><div class="jt" style="text-align:center">Sant Pere Bàsquet · ${L.cat}</div>
+<div class="sw"><div class="k" id="kard"><div class="jt" style="text-align:center">Bàsquet Sant Pere · ${L.cat}</div>
 <div class="jh">${j.f?`<img class="fav" src="${j.f}">`:jer(j.d)}<div><div class="jn">${esc(j.n)}</div><div class="js">${j.f&&j.d!==''?'#'+esc(j.d)+' · ':''}${pj} ${L.matches}</div></div></div>
 <div class="jt">${L.avgs}</div><div class="jg">${[['PTS',av(T.PTS)],['REB',av(T.REB)],['AST',av(T.AS)],['REC',av(T.RB)]].map(([a,b])=>`<div><b>${b}</b><span>${a}</span></div>`).join('')}</div>
 <div class="jg g3">${['T2','T3','TL'].map(k=>`<div><b>${pc(k)}</b><span>${k} ${T[k+'+']}/${T[k+'+']+T[k+'-']}</span></div>`).join('')}</div>
@@ -609,7 +609,7 @@ $('share').innerHTML=`<style>
 #share #wamsg{position:fixed;bottom:64px;left:0;right:0;text-align:center}
 </style>
 <div class="sw"><div class="k" id="kard">
-<img class="esc" src="${LOGO}" alt=""><div class="top2"><b>Sant Pere Bàsquet</b><span>${L.cat}</span><em>${fmtF(m.fecha)}</em></div>
+<img class="esc" src="${LOGO}" alt=""><div class="top2"><b>Bàsquet Sant Pere</b><span>${L.cat}</span><em>${fmtF(m.fecha)}</em></div>
 <div class="sb"><div class="t">${t1}</div><div class="s">${(()=>{const oc='#fff',o=x=>`<em style="font-style:normal;color:${oc}">${x}</em>`;return V?`${s1}<span>-</span>${o(s2)}`:`${o(s1)}<span>-</span>${s2}`})()}</div><div class="t">${t2}</div></div>
 ${res?`<div class="bd2"><span class="${res[0]}">${res[1]}</span></div>`:'<div style="height:8px"></div>'}
 <div class="chs">${chip(tp,L.topPts,s=>s.PTS)}${chip(tr,L.topReb,reb)}${chip(ta,L.topAs,s=>s.AS)}</div>
@@ -618,7 +618,7 @@ ${res?`<div class="bd2"><span class="${res[0]}">${res[1]}</span></div>`:'<div st
 </div></div>
 <p id="wamsg" class="msg"></p>
 <div class="shb2"><button class="on" onclick="shareImg()">${L.shareImg}</button><button class="ok" onclick="copiaWA()" style="flex:none;width:56px">💬</button><button onclick="$('share').classList.add('hide')" style="flex:none;width:56px">✕</button></div>`;
-WA=[`🏀 *${vsT(m,m.rival||L.noRival)}* — ${fmtF(m.fecha)}`,`_Sant Pere Bàsquet · ${L.cat}_`,`*${hasB?rsT(m,a,b):a}*${res?' '+res[2]+' '+res[1]:''}`,'',
+WA=[`🏀 *${vsT(m,m.rival||L.noRival)}* — ${fmtF(m.fecha)}`,`_Bàsquet Sant Pere · ${L.cat}_`,`*${hasB?rsT(m,a,b):a}*${res?' '+res[2]+' '+res[1]:''}`,'',
 `⭐ *${L.top}*`,tp?`• ${L.topPts}: ${nm(tp.j)} (${tp.s.PTS} ${L.pts})`:'',tr?`• ${L.topReb}: ${nm(tr.j)} (${reb(tr.s)})`:'',ta?`• ${L.topAs}: ${nm(ta.j)} (${ta.s.AS})`:'','',
 `👟 *${L.players}*`,...ps.map(p=>`${dn(p.j)}: *${p.s.PTS} ${L.pts}*\n   ${line(p.s).replace('<br>','\n   ')}\n   ${shots(p.s)}`),'',
 `📊 *${L.teamW}*`,line(T).replace('<br>','\n'),shots(T)].filter((x,i,arr)=>x!==''||arr[i-1]!=='').join('\n');
