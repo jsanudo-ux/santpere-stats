@@ -78,7 +78,7 @@ textarea{width:100%;height:80px;font-size:12px;margin:6px 0}
 .row{display:flex;gap:6px;margin-bottom:8px}
 .row input:first-child{width:70px}.row input:nth-child(2){flex:1}
 .list>div{display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid #333;gap:6px}
-.list .info{flex:1}.list small{color:#999}
+.list .info{flex:1}.plnm{font-size:20px;font-weight:800;letter-spacing:.3px;line-height:1.15;padding-left:4px}.list small{color:#999}
 .tw{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:12px}
 th,td{padding:5px 3px;text-align:center;border-bottom:1px solid #333;white-space:nowrap}
@@ -130,7 +130,6 @@ document.body.innerHTML=`<style>${CSS}</style>
 <section id="equipo">
 <div class="row"><input id="dorsal" type="number" inputmode="numeric" placeholder="${L.num}"><input id="nombre" placeholder="${L.name}"><button onclick="addP()">＋</button></div>
 <div class="list" id="lista"></div>
-<p class="lbl" style="margin-top:8px">${L.photoHint}</p>
 <button class="ok" style="width:100%;margin-top:8px" onclick="guardarPl()">${L.savePl}</button>
 <p id="plmsg" class="msg"></p>
 <input type="file" id="finput" accept="image/*" class="hide" onchange="cargaFoto(this)">
@@ -345,7 +344,7 @@ const SHORT={PJ:'PJ',PTS:'PTS',T2:'T2',T3:'T3',TL:'TL'};
 const KM=['J','PTS','T2','T3','TL','REB','AS','RB','TP','FA'];
 function tablaDe(jug,ev,el){const ph=jug.map(actual);const rows=ph.map(j=>fila(dn(j),st(ev,j.id)));rows.push(fila(L.total,st(ev,null)));pinta(el,KM,rows,ph);return[head(KM),...rows]}
 function render(){
-$('lista').innerHTML=S.jug.map(j=>`<div><input type="number" inputmode="numeric" placeholder="${L.num}" value="${esc(j.d)}" style="width:64px;padding:8px" onchange="cambiaD(${j.id},this.value)"><span onclick="fotoP(${j.id})" style="cursor:pointer;font-size:26px">${j.f?`<img class="av" style="margin:0" src="${j.f}">`:'📷'}</span><span class="info">${esc(j.n)}</span><button onclick="delP(${j.id})">✕</button></div>`).join('')||`<p style="color:#888">${L.addHint}</p>`;
+$('lista').innerHTML=S.jug.map(j=>`<div><input type="number" inputmode="numeric" placeholder="${L.num}" value="${esc(j.d)}" style="width:64px;padding:8px" onchange="cambiaD(${j.id},this.value)"><span class="info plnm">${esc(j.n)}</span><button onclick="delP(${j.id})">✕</button></div>`).join('')||`<p style="color:#888">${L.addHint}</p>`;
 const ae=document.activeElement;if(ae!==$('rival'))$('rival').value=S.rival||'';$('fecha').value=S.fecha||'';if(ae!==$('rp'))$('rp').value=S.rp||'';
 $('sel').innerHTML=S.jug.filter(j=>S.pista.includes(j.id)).map(j=>{const f=st(S.ev,j.id).FA;return`<button class="${cambio?(OUT.includes(j.id)?'sel':''):(cur===j.id?'on':'')}" data-id="${j.id}" onclick="tocaPista(${j.id})">${j.f?av(j):jer(j.d)}${nm2(j)}${f?` <span class="${f>=5?'warn':''}">F${f}</span>`:''}</button>`}).join('');
 $('cuartos').innerHTML=[1,2,3,4,5].map(q=>`<button class="${S.q===q?'on':''}" onclick="S.q=${q};save();render()">${qn(q)}</button>`).join('');
