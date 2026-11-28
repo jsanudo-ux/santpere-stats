@@ -261,8 +261,11 @@ body{padding-top:calc(env(safe-area-inset-top) + 10px)!important}
 .jer{display:block;margin:0 auto 5px;flex:none}
 .tname{font:800 21px/1.05 'Barlow Condensed',system-ui,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#fff}
 .tcat{font-size:11.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#fff;opacity:.85;margin-top:3px}
-#sel button{position:relative}#sel .ppb{position:absolute;top:4px;right:4px;min-width:19px;height:19px;padding:0 3px;border-radius:10px;background:#fff;color:#c8102e;font:800 11px/19px system-ui,sans-serif;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.4)}#sel .ppb.z{background:rgba(255,255,255,.18);color:rgba(255,255,255,.75);box-shadow:none}
-body.playing #marc{margin:14px 0 16px}body.playing .tinfo{margin:0 0 28px}#sel button{height:116px!important}
+#sel button{position:relative;height:126px!important}
+#sel .fb{position:absolute;top:3px;right:3px;width:17px;height:17px;border-radius:50%;font:800 10.5px/17px system-ui,sans-serif;text-align:center;background:rgba(255,255,255,.22);color:#fff}
+#sel .fb.f3{background:#f5c400;color:#222}#sel .fb.f4{background:#e00000;color:#fff}#sel .fb.f5{background:#e00000;color:#fff;box-shadow:0 0 0 2px #fff}
+#sel .ppl{margin-top:auto;margin-bottom:2px;padding:2px 8px;border-radius:8px;background:rgba(255,255,255,.14);font-size:11px;white-space:nowrap}#sel .ppl b{font-size:14px}#sel .ppl.z{opacity:.55}
+body.playing #marc{margin:14px 0 16px}body.playing .tinfo{margin:0 0 20px}
 .top .hr{display:flex;align-items:center;gap:10px;align-self:flex-start;flex:none}.hr .lang{align-self:center}
 #bCfg{display:none;height:30px;padding:0 10px;font-size:12.5px;font-weight:700;line-height:28px;border-radius:999px;color:#fff;white-space:nowrap;background:rgba(0,0,0,.25)!important;border:1px solid rgba(255,255,255,.45)!important}
 body.playing #bCfg{display:block}
@@ -375,7 +378,7 @@ function tablaDe(jug,ev,el){const ph=jug.map(actual);const rows=ph.map(j=>fila(d
 function render(){
 $('lista').innerHTML=S.jug.map(j=>`<div><input type="number" inputmode="numeric" placeholder="${L.num}" value="${esc(j.d)}" style="width:64px;padding:8px" onchange="cambiaD(${j.id},this.value)"><span class="info plnm">${esc(j.n)}</span><button onclick="delP(${j.id})">✕</button></div>`).join('')||`<p style="color:#888">${L.addHint}</p>`;
 const ae=document.activeElement;if(ae!==$('rival'))$('rival').value=S.rival||'';$('fecha').value=S.fecha||'';
-$('sel').innerHTML=S.jug.filter(j=>S.pista.includes(j.id)).map(j=>{const x=st(S.ev,j.id),f=x.FA;return`<button class="${cambio?(OUT.includes(j.id)?'sel':''):(cur===j.id?'on':'')}" data-id="${j.id}" onclick="tocaPista(${j.id})">${j.f?av(j):jer(j.d,1)}${nm2(j)}${f?` <span class="${f>=5?'warn':''}">F${f}</span>`:''}<span class="ppb${x.PTS?'':' z'}">${x.PTS}</span></button>`}).join('');
+$('sel').innerHTML=S.jug.filter(j=>S.pista.includes(j.id)).map(j=>{const x=st(S.ev,j.id),f=x.FA;return`<button class="${cambio?(OUT.includes(j.id)?'sel':''):(cur===j.id?'on':'')}" data-id="${j.id}" onclick="tocaPista(${j.id})">${j.f?av(j):jer(j.d,1)}${nm2(j)}${f?`<span class="fb f${Math.min(f,5)}">${f}</span>`:''}<span class="ppl${x.PTS?'':' z'}"><b>${x.PTS}</b> pts</span></button>`}).join('');
 $('cuartos').innerHTML=[1,2,3,4,5].map(q=>`<button class="${S.q===q?'on':''}" onclick="S.q=${q};save();render()">${qn(q)}</button>`).join('');
 const P=st(S.ev,null).PTS;$('marc').innerHTML=marcador(P);{const r=$('bRedo');if(r)r.disabled=!(S.redo&&S.redo.length)}$('bL').classList.toggle('on',S.loc!=='V');$('bV').classList.toggle('on',S.loc==='V');$('pcfg').classList.toggle('hide',S.view==='play');$('pplay').classList.toggle('hide',S.view!=='play');{const tf=tFal();const e=$('tfal');if(e){e.innerHTML=L.tFouls(tf);e.className=tf>=4?'bonus':''}const b=$('bTM');if(b){const n=tmLeft();b.textContent=n?L.tmBtn(n):L.tmNone;b.disabled=!n}}document.body.classList.toggle('playing',curTab==='partido'&&S.view==='play');wakeOn();prevM();
 $('log').innerHTML=S.ev.slice(-15).reverse().map(e=>{if(e.k==='TM')return`<div>${qn(e.q)} · ${L.tmLog}</div>`;if(isR(e))return`<div>${qn(e.q)} · ${esc(S.rival||L.noRival)} +${e.k[1]}</div>`;const j=S.jug.find(x=>x.id===e.p);return`<div>${qn(e.q)} · ${j?esc(dn(j)):'?'} — ${L.ev[e.k]||e.k}</div>`}).join('');
