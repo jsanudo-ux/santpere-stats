@@ -156,10 +156,11 @@ document.body.innerHTML=`<style>${CSS}</style>
 <button id="bCambio" onclick="modoCambio()" style="width:100%;margin-bottom:8px"></button>
 <div id="zonaBanco" class="hide"><div class="lbl">${L.bench}</div><div class="bench" id="banco"></div></div>
 <div class="grid">
-<button class="ok" onclick="act('TL+')">TL ✔</button><button class="ok" onclick="act('T3+')">3 ✔</button><button class="ok" onclick="act('T2+')">2 ✔</button>
-<button class="ko" onclick="act('TL-')">TL ✘</button><button class="ko" onclick="act('T3-')">3 ✘</button><button class="ko" onclick="act('T2-')">2 ✘</button>
-${['RE','AS','RB','TP','FA'].map(k=>`<button${k==='RE'?' class="rbb"':''}${k==='FA'?' style="grid-column:span 2"':''} onclick="act('${k}')">${k==='RE'?`<span class="rbk"><b>REB</b><small>${L.btn.RE}</small></span>`:L.btn[k]}</button>`).join('')}<div style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:6px"><button onclick="undo()">${L.undo}</button><button id="bRedo" onclick="redo()">${L.redo}</button></div>
+<button class="ok" onclick="act('TL+',this)">TL ✔</button><button class="ok" onclick="act('T3+',this)">3 ✔</button><button class="ok" onclick="act('T2+',this)">2 ✔</button>
+<button class="ko" onclick="act('TL-',this)">TL ✘</button><button class="ko" onclick="act('T3-',this)">3 ✘</button><button class="ko" onclick="act('T2-',this)">2 ✘</button>
+${['RE','AS','RB','TP','FA'].map(k=>`<button${k==='RE'?' class="rbb"':''}${k==='FA'?' style="grid-column:span 2"':''} onclick="act('${k}',this)">${k==='RE'?`<span class="rbk"><b>REB</b><small>${L.btn.RE}</small></span>`:L.btn[k]}</button>`).join('')}<div style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:6px"><button onclick="undo()">${L.undo}</button><button id="bRedo" onclick="redo()">${L.redo}</button></div>
 </div>
+<div id="toastb"></div>
 <div class="log" id="log"></div>
 </div>
 </section>
@@ -290,8 +291,11 @@ body.playing #bCfg{display:block}
 .rhint{font-size:10.5px;opacity:.7;margin-top:4px;white-space:nowrap}
 #tfal{font-size:13px;color:#ccc;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.06)}#tfal.bonus{background:rgba(255,214,10,.2);color:#ffd60a;border:1px solid rgba(255,214,10,.5)}
 #bTM{padding:7px 12px;font-size:13px}#bTM:disabled{opacity:.4}
-#toastb{position:fixed;left:10px;right:10px;top:calc(env(safe-area-inset-top) + 8px);z-index:110;display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(28,28,30,.96);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:10px 12px;color:#fff;font-size:15px;font-weight:600;transform:translateY(-160%);transition:transform .25s ease;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.5)}
-#toastb.on{transform:none;pointer-events:auto}#toastb button{padding:8px 12px;font-size:14px;flex:none}
+#toastb{margin-top:10px;max-height:0;opacity:0;overflow:hidden;border-radius:12px;background:#1f3a26;border:1px solid #30d158;color:#fff;font-size:16px;font-weight:700;text-align:center;padding:0 12px;transition:max-height .25s,opacity .25s,padding .25s}
+#toastb.mal{background:#3a1f1f;border-color:#ff453a}#toastb.on{max-height:60px;opacity:1;padding:11px 12px;animation:tIn .35s ease-out}@keyframes tIn{0%{transform:scale(.92)}60%{transform:scale(1.03)}100%{transform:none}}
+#pplay .grid button.hit{animation:bHit .45s ease-out}@keyframes bHit{0%{transform:scale(1)}30%{transform:scale(.9);filter:brightness(1.9);box-shadow:0 0 0 3px #30d158}65%{transform:scale(1.06)}100%{transform:scale(1)}}
+#pplay .grid button.hit::after{content:'✓';position:absolute;right:8px;top:4px;font-size:16px;font-weight:900;color:#30d158;animation:chk .6s ease-out forwards}@keyframes chk{0%{opacity:0;transform:scale(.4)}30%{opacity:1;transform:scale(1.3)}100%{opacity:0;transform:translateY(-8px)}}
+#pplay .grid button{position:relative}#pplay .grid button.nohit{animation:bNo .4s}@keyframes bNo{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
 body.playing .top{padding:6px 10px!important;margin-bottom:8px!important}body.playing .logo{width:30px;height:28px;border-radius:7px}body.playing .tname{font-size:16px}body.playing .tcat{display:none}
 
 body.playing .score{padding:6px 10px!important;margin-bottom:8px}body.playing .score b{font-size:28px}body.playing .q button{padding:6px 9px}
@@ -323,7 +327,8 @@ function delP(id){confirmar(L.confDelP,()=>{S.jug=S.jug.filter(j=>j.id!==id);S.p
 function fotoP(id){fsel=id;$('finput').value='';$('finput').click()}
 function cargaFoto(inp){const file=inp.files[0];if(!file)return;const img=new Image();img.onload=()=>{const z=140,c=document.createElement('canvas');c.width=c.height=z;const s=Math.min(img.width,img.height);c.getContext('2d').drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,z,z);const j=S.jug.find(x=>x.id===fsel);if(j){j.f=c.toDataURL('image/jpeg',0.7);save();render();$('plmsg').textContent=L.photoSet}URL.revokeObjectURL(img.src)};img.src=URL.createObjectURL(file)}
 async function guardarPl(){$('plmsg').textContent=L.savingD;const ok=await persistir();$('plmsg').textContent=ok?L.plSaved:L.localOnly}
-function act(k){if(cambio){flash(L.endSubsFirst);return}if(!cur||!S.pista.includes(cur)){flash(L.pickPlayer);return}S.ev.push({p:cur,k,q:S.q});S.redo=[];{const pn={'T2+':2,'T3+':3,'TL+':1}[k];if(pn){const id=cur;setTimeout(()=>fx(id,pn),0)}}save();render();toast(cur,k);if(k==='FA'&&st(S.ev,cur).FA===5)flash(L.foul5(S.jug.find(j=>j.id===cur).n));if(k==='FA'&&tFal()===4)flash(L.bonus)}
+function bfx(b,c){if(!b||!b.classList)return;b.classList.remove('hit','nohit');void b.offsetWidth;b.classList.add(c);clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove(c),600)}
+function act(k,b){if(cambio){bfx(b,'nohit');flash(L.endSubsFirst);return}if(!cur||!S.pista.includes(cur)){bfx(b,'nohit');flash(L.pickPlayer);return}bfx(b,'hit');S.ev.push({p:cur,k,q:S.q});S.redo=[];{const pn={'T2+':2,'T3+':3,'TL+':1}[k];if(pn){const id=cur;setTimeout(()=>fx(id,pn),0)}}save();render();toast(cur,k);if(k==='FA'&&st(S.ev,cur).FA===5)flash(L.foul5(S.jug.find(j=>j.id===cur).n));if(k==='FA'&&tFal()===4)flash(L.bonus)}
 const isR=e=>e.p===0&&/^R[123]$/.test(e.k);
 const rivP=ev=>ev.filter(isR).reduce((a,e)=>a+ +e.k[1],0);
 function syncRp(){if(S.ev.some(isR))S.rp=String(rivP(S.ev))}
@@ -344,8 +349,8 @@ const tFal=()=>S.ev.filter(e=>e.k==='FA'&&(S.q>=4?e.q>=4:e.q===S.q)).length;
 const tmLeft=()=>{const h=S.q<=2?[1,2]:S.q<=4?[3,4]:[5],mx=S.q<=2?2:S.q<=4?3:1;return Math.max(0,mx-S.ev.filter(e=>e.k==='TM'&&h.includes(e.q)).length)};
 function tiempoMuerto(){if(!tmLeft())return;S.ev.push({p:0,k:'TM',q:S.q});S.redo=[];save();render();toast(0,'TM')}
 let toastT=null;
-function toast(id,k){let t=$('toastb');if(!t){t=document.createElement('div');t.id='toastb';document.body.appendChild(t)}const j=S.jug.find(x=>x.id===id);const sn=j?(j.d!==''?'#'+j.d+' ':'')+String(j.n).split(' ')[0]:'';
-t.innerHTML=`<span>${k==='TM'?L.tmLog:/^R[123]$/.test(k)?esc(S.rival||L.noRival)+' +'+k[1]:esc(sn)+' · '+(L.ev[k]||k)}</span><button onclick="undo();$('toastb').classList.remove('on')">${L.undo}</button>`;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),3500)}
+function toast(id,k){let t=$('toastb');if(!t)return;const j=S.jug.find(x=>x.id===id);const sn=j?(j.d!==''?'#'+j.d+' ':'')+String(j.n).split(' ')[0]:'';
+t.innerHTML=`<span>${k==='TM'?L.tmLog:/^R[123]$/.test(k)?esc(S.rival||L.noRival)+' +'+k[1]:esc(sn)+' · '+(L.ev[k]||k)}</span>`;t.classList.remove('on');t.classList.toggle('mal',/-$/.test(k)||k==='FA');void t.offsetWidth;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),3000)}
 let WL=null;
 async function wakeOn(){const want=curTab==='partido'&&S.view==='play'&&document.visibilityState==='visible';try{if(want&&!WL&&navigator.wakeLock){WL=await navigator.wakeLock.request('screen');WL.addEventListener('release',()=>{WL=null})}else if(!want&&WL){await WL.release();WL=null}}catch(e){WL=null}}
 document.addEventListener('visibilitychange',()=>{WL=null;wakeOn()});
