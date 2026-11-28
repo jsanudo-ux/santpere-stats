@@ -273,7 +273,7 @@ body{padding-top:calc(env(safe-area-inset-top) + 10px)!important}
 .ptab{margin:4px 0 12px}.ptab table{width:100%;border-collapse:collapse;font-size:14px;text-align:center}.ptab th,.ptab td{padding:6px 3px;border-bottom:1px solid #333}.ptab tr>th:first-child{text-align:left;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px}.ptab td.qw{color:#30d158;font-weight:800}.ptab td.ql{color:#ff453a;font-weight:800}.ptab td.pt{font-weight:800;font-size:15px}.pacc{font-size:12px;color:#999;text-align:center;margin-top:5px}
 #parcPop{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:16px}#parcPop>div{background:#1c1c1e;border:1px solid #444;border-radius:16px;padding:14px;width:100%;max-width:420px;color:#fff}#parcPop b{display:block;margin-bottom:6px;font-size:16px}#parcPop button{width:100%}.sbt.us{cursor:pointer}
 body.compact #pplay .grid>button{display:none}
-body.compact #sel button{height:192px!important;padding-top:16px!important}
+body.compact #sel button{height:192px!important;padding-top:28px!important}
 body.compact #sel .jer{width:68px;height:79px;margin-bottom:4px}
 body.compact #sel .nm2{font-size:13.5px;letter-spacing:-.2px}body.compact #sel .nm2 b{font-size:12px}
 body.compact #sel .ppl{font-size:12px;padding:3px 9px}body.compact #sel .ppl b{font-size:17px}
